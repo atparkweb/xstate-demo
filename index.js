@@ -10,15 +10,10 @@ function lightBulb() {
       isLit = !isLit
     },
     break() {
+      isLit = false
       isBroken = true
     }
   }
 }
 
-const bulb = lightBulb()
-const log = () => console.log(bulb.state())
-
-// Demonstrates an impossible state (i.e. On and Broken)
-bulb.toggle()
-bulb.break()
-log()
+module.exports = { lightBulb }
