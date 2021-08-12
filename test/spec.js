@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 const { interpret } = require('xstate')
-const { lightBulbMachine } = require('../index')
+const { lightBulbMachine } = require('../lib/light-bulb-machine')
 
 describe("Light bulb state machine", () => {
   let service
