@@ -1,19 +1,32 @@
+const STATES = {
+  lit: 'lit',
+  unlit: 'unlit',
+  broken: 'broken'
+}
+
 function lightBulb() {
-  let isLit = false;
-  let isBroken = false;
+  let state = STATES.unlit
 
   return {
     state() {
-      return { isLit, isBroken }
+      return state
     },
     toggle() {
-      isLit = !isLit
+      switch (state) {
+	case STATES.lit:
+	  state = STATES.unlit
+	  return true
+	case STATES.unlit:
+	  state = STATES.lit
+	  return true
+	default:
+	  return false
+      }
     },
     break() {
-      isLit = false
-      isBroken = true
+      state = STATES.broken
     }
   }
 }
 
-module.exports = { lightBulb }
+module.exports = { lightBulb, STATES }
