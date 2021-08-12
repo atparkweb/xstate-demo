@@ -1,35 +1,36 @@
-const { createMachine } = require('xstate')
+const { createMachine, interpret } = require('xstate')
+
 
 // States are triggered by events. 'on' defines events
-const lit = {
-  on: {
-    BREAK: 'broken',
-    TOGGLE: 'unlit'
-  }
-}
-const unlit = {
-  on: {
-    BREAK: 'broken',
-    TOGGLE: 'lit'
-  }
-}
-const broken = {
-  // Once this state is reached, it cannot reach other states. Hence the 'final' type
-  type: 'final'
-}
-
-const states = { lit, unlit, broken }
-
-// initial state
-const initial = 'unlit'
-
-// XState configuration
-const config = {
+const lightBulbMachine = createMachine({
   id: 'lightBulb',
-  initial,
-  states
-}
+  initial: 'unlit',
+  states: {
+    lit: {
+      on: {
+        BREAK: 'broken',
+        TOGGLE: 'unlit'
+      }
+    },
+    unlit: {
+      on: {
+        BREAK: 'broken',
+        TOGGLE: 'lit'
+      }
+    },
+    broken: {
+      // Once this state is reached, it cannot reach other states. Hence the 'final' type
+      type: 'final'
+    }
+  }
+})
 
-const lightBulbMachine = createMachine(config)
+// A service maintains state through transitions
+// doesn't do anything until we `start` the service
+const service = interpret(lightBulbMachine).start()
+
+// once service is started we can send events...
+const nextState = service.send('TOGGLE')
+nextState.value //?
 
 module.exports = { lightBulbMachine }
