@@ -21,7 +21,7 @@ const lightBulbMachine = createMachine({
     },
     broken: {
       // Once this state is reached, it cannot reach other states. Hence the 'final' type
-      type: 'final'
+      //type: 'final'
     }
   }
 })
@@ -34,9 +34,14 @@ const service = interpret(lightBulbMachine).start()
 
 // use a listener...
 service.onTransition(state => {
-  console.log(state.value)
-})
+  // you can check if the state actually changed
+  if (state.changed) {
 
+    // you can also match on particular state
+    if (state.matches('broken')) console.log("I'm broken! Fix me!")
+    console.log(state.value)
+  }
+})
 // or store state in local variable...
 // const nextState = service.send('TOGGLE')
 // console.log(nextState.value)
