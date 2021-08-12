@@ -31,6 +31,5 @@ const config = {
 }
 
 const lightBulbMachine = createMachine(config)
-console.log(lightBulbMachine)
 
 module.exports = { lightBulbMachine }
