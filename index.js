@@ -13,14 +13,14 @@ function lightBulb() {
     },
     toggle() {
       switch (state) {
-	case STATES.lit:
-	  state = STATES.unlit
-	  return true
-	case STATES.unlit:
-	  state = STATES.lit
-	  return true
-	default:
-	  return false
+        case STATES.lit:
+          state = STATES.unlit
+          return true
+        case STATES.unlit:
+          state = STATES.lit
+          return true
+        default:
+          return false
       }
     },
     break() {
