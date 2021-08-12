@@ -1,32 +1,36 @@
-const STATES = {
-  lit: 'lit',
-  unlit: 'unlit',
-  broken: 'broken'
-}
+const { createMachine } = require('xstate')
 
-function lightBulb() {
-  let state = STATES.unlit
-
-  return {
-    state() {
-      return state
-    },
-    toggle() {
-      switch (state) {
-        case STATES.lit:
-          state = STATES.unlit
-          return true
-        case STATES.unlit:
-          state = STATES.lit
-          return true
-        default:
-          return false
-      }
-    },
-    break() {
-      state = STATES.broken
-    }
+// States are triggered by events. 'on' defines events
+const lit = {
+  on: {
+    BREAK: 'broken',
+    TOGGLE: 'unlit'
   }
 }
+const unlit = {
+  on: {
+    BREAK: 'broken',
+    TOGGLE: 'lit'
+  }
+}
+const broken = {
+  // Once this state is reached, it cannot reach other states. Hence the 'final' type
+  type: 'final'
+}
 
-module.exports = { lightBulb, STATES }
+const states = { lit, unlit, broken }
+
+// initial state
+const initial = 'unlit'
+
+// XState configuration
+const config = {
+  id: 'lightBulb',
+  initial,
+  states
+}
+
+const lightBulbMachine = createMachine(config)
+console.log(lightBulbMachine)
+
+module.exports = { lightBulbMachine }

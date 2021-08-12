@@ -1,26 +1,19 @@
 const { expect } = require('chai')
-const { lightBulb, STATES } = require('../index')
+const { lightBulbMachine } = require('../index')
+
+// alias
+const machine = lightBulbMachine
 
 describe("Light bulb state machine", () => {
-  let bulb
-
-  beforeEach(() => {
-    bulb = lightBulb()
-  })
-
   it("should be initialized as unlit and unbroken", () => {
-    expect(bulb.state()).to.eq(STATES.unlit)
+    expect(machine.initial).to.eq('unlit')
   })
 
   it("should be able to be turned on", () => {
-    bulb.toggle()
-    expect(bulb.state()).to.eq(STATES.lit)
+    expect(machine.transition('unlit', 'TOGGLE').value).to.eq('lit')
   })
 
   it("should not be lit when broken", () => {
-    bulb.toggle()
-    bulb.break()
-    bulb.state()
-    expect(bulb.state()).to.eq(STATES.broken)
+    expect(machine.transition('lit', 'BREAK').value).to.eq('broken')
   })
 })
