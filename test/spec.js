@@ -1,31 +1,33 @@
 const { expect } = require('chai')
+const { interpret } = require('xstate')
 const { lightBulbMachine } = require('../index')
 
 describe("Light bulb state machine", () => {
-  // alias
-  let machine
+  let service
 
   beforeEach(() => {
-    machine = lightBulbMachine
+    service = interpret(lightBulbMachine).start()
   })
 
   it("should be initialized as unlit and unbroken", () => {
-    expect(machine.initial).to.eq('unlit')
+    expect(service.state.value).to.eq('unlit')
   })
 
   it("should be able to be turned on", () => {
-    expect(machine.transition('unlit', 'TOGGLE').value).to.eq('lit')
+    service.send('TOGGLE')
+    expect(service.state.value).to.eq('lit')
   })
 
   it("should not be lit when broken", () => {
-    expect(machine.transition('lit', 'BREAK').value).to.eq('broken')
+    service.send('BREAK')
+    expect(service.state.value).to.eq('broken')
   })
 
-  it("should throw an error if undefined state is passed", () => {
+  it("should throw an error if undefined event is passed", () => {
     const invalidTransition = () => {
-      machine.transition('foo', 'TOGGLE')
+      service.send('FOO')
     }
 
-    expect(invalidTransition).to.throw("Child state 'foo' does not exist on 'lightBulb'")
+    expect(invalidTransition).to.throw("does not accept event 'FOO'")
   })
 })

@@ -5,6 +5,7 @@ const { createMachine, interpret } = require('xstate')
 const lightBulbMachine = createMachine({
   id: 'lightBulb',
   initial: 'unlit',
+  strict: true,
   states: {
     lit: {
       on: {
@@ -30,7 +31,18 @@ const lightBulbMachine = createMachine({
 const service = interpret(lightBulbMachine).start()
 
 // once service is started we can send events...
-const nextState = service.send('TOGGLE')
-nextState.value //?
+
+// use a listener...
+service.onTransition(state => {
+  console.log(state.value)
+})
+
+// or store state in local variable...
+// const nextState = service.send('TOGGLE')
+// console.log(nextState.value)
+
+// or don't store it and check the value...
+// service.send('TOGGLE')
+// service.state.value //?
 
 module.exports = { lightBulbMachine }
