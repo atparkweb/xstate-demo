@@ -1,32 +1,32 @@
 const STATES = {
-  lit: 'lit',
-  unlit: 'unlit',
-  broken: 'broken'
-}
+  lit: "lit",
+  unlit: "unlit",
+  broken: "broken",
+};
 
 function lightBulb() {
-  let state = STATES.unlit
+  let state = STATES.unlit;
 
   return {
     state() {
-      return state
+      return state;
     },
     toggle() {
       switch (state) {
-	case STATES.lit:
-	  state = STATES.unlit
-	  return true
-	case STATES.unlit:
-	  state = STATES.lit
-	  return true
-	default:
-	  return false
+        case STATES.lit:
+          state = STATES.unlit;
+          return true;
+        case STATES.unlit:
+          state = STATES.lit;
+          return true;
+        default:
+          return false;
       }
     },
     break() {
-      state = STATES.broken
-    }
-  }
+      state = STATES.broken;
+    },
+  };
 }
 
-module.exports = { lightBulb, STATES }
+module.exports = { lightBulb, STATES };
